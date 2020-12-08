@@ -1,9 +1,9 @@
-const { Router, response } = require("express");
-const User = require("../models/User");
+const { Router } = require("express");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-const iwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const config = require("./../config/default.json");
+const User = require("../models/User");
 const router = Router();
 
 //  /api/auth/register
@@ -17,7 +17,7 @@ router.post(
     try {
       const errors = validationResult(req);
 
-      if (errors.isEmpty()) {
+      if (!errors.isEmpty()) {
         return res.status(400).json({
           errors: errors.array(),
           message: "Not correct data for registration",
@@ -32,9 +32,9 @@ router.post(
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
-      const user = new User({ email: email, password: hashedPassword });
       await user.save();
-      res.status(201).json({ message: "User creared" });
+      const user = new User({ email: email, password: hashedPassword });
+      res.status(201).json({ message: "User created" });
     } catch (e) {
       res.status(500).json({ message: "Somethhing went wrong ..." });
     }
