@@ -19,8 +19,8 @@ export const AuthPage = () => {
 
   const registerHandler = async () => {
     try {
-      const data = await request("api/auth/register", "POST", { ...form });
-      console.log("data", data);
+      const data = await request("/api/auth/register", "POST", { ...form });
+      message(data.message);
     } catch (e) {}
   };
 
@@ -44,22 +44,27 @@ export const AuthPage = () => {
                 />
                 <label htmlFor='email'>Email</label>
               </div>
-            </div>
-            <div className='input-field'>
-              <input
-                placeholder='Enter password'
-                id='password'
-                type='password'
-                name='password'
-                className='yellow-input'
-                onChange={changeHandler}
-                disabled={loading}
-              />
-              <label htmlFor='email'>Password</label>
+
+              <div className='input-field'>
+                <input
+                  placeholder='Enter password'
+                  id='password'
+                  type='password'
+                  name='password'
+                  className='yellow-input'
+                  onChange={changeHandler}
+                  disabled={loading}
+                />
+                <label htmlFor='email'>Password</label>
+              </div>
             </div>
           </div>
           <div className='card-action'>
-            <button className='btn yellow darken-4' style={{ marginRight: 10 }}>
+            <button
+              className='btn yellow darken-4'
+              style={{ marginRight: 10 }}
+              disabled={loading}
+            >
               Login
             </button>
             <button

@@ -1,12 +1,12 @@
 const { Router } = require("express");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const config = require("config");
 const jwt = require("jsonwebtoken");
-const config = require("./../config/default.json");
 const User = require("../models/User");
 const router = Router();
 
-//  /api/auth/register
+// /api/auth/register
 router.post(
   "/register",
   [
@@ -23,6 +23,7 @@ router.post(
           message: "Not correct data for registration",
         });
       }
+
       const { email, password } = req.body;
 
       const candidate = await User.findOne({ email });
@@ -32,16 +33,18 @@ router.post(
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new User({ email, password: hashedPassword });
+
       await user.save();
-      const user = new User({ email: email, password: hashedPassword });
+
       res.status(201).json({ message: "User created" });
     } catch (e) {
-      res.status(500).json({ message: "Somethhing went wrong ..." });
+      res.status(500).json({ message: "Something went wrong ..." });
     }
   }
 );
 
-//  /api/auth/login
+// /api/auth/login
 router.post(
   "/login",
   [
@@ -52,7 +55,7 @@ router.post(
     try {
       const errors = validationResult(req);
 
-      if (errors.isEmpty()) {
+      if (!errors.isEmpty()) {
         return res.status(400).json({
           errors: errors.array(),
           message: "Not correct data for login",
@@ -60,6 +63,7 @@ router.post(
       }
 
       const { email, password } = req.body;
+
       const user = await User.findOne({ email });
 
       if (!user) {
@@ -78,7 +82,7 @@ router.post(
 
       res.json({ token, userId: user.id });
     } catch (e) {
-      res.status(500).json({ message: "Somethhing went wrong ..." });
+      res.status(500).json({ message: "Something went wrong ..." });
     }
   }
 );

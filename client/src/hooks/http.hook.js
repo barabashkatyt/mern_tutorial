@@ -12,14 +12,16 @@ export const useHttp = () => {
           body = JSON.stringify(body);
           headers["Content-Type"] = "application/json";
         }
+        console.log(body);
+        const response = await fetch(url, { method, body, headers });
+        const data = await response.json();
 
-        const responce = await fetch(url, { method, body, headers });
-        const data = await responce.json();
-
-        if (!responce.ok) {
+        if (!response.ok) {
           throw new Error(data.message || "Something went wrong");
         }
+
         setLoading(false);
+
         return data;
       } catch (e) {
         setLoading(false);

@@ -1,5 +1,5 @@
 {
   "port": "5000",
   "jwtSecret": "mern tutorial js node",
-  "mongoUri": "mongodb+srv://balbatushka:123qwe@cluster0.enncl.mongodb.net/app?retryWrites=true&w=majority"
+  "mongoUri": "mongodb+srv://user123:123qwe@cluster0.enncl.mongodb.net/app?retryWrites=true&w=majority"
 }
